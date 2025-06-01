@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -116,8 +115,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex-1 space-y-3 p-2 sm:p-4 md:p-6 pt-3">
-      <Tabs defaultValue="overview" className="space-y-3">
+    <div className="flex-1 space-y-4 p-4 md:p-6">
+      <Tabs defaultValue="overview" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
           <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
           <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
@@ -125,9 +124,9 @@ export default function Dashboard() {
           <TabsTrigger value="notifications" className="text-xs sm:text-sm">Notifications</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview" className="space-y-3">
+        <TabsContent value="overview" className="space-y-6">
           {/* Overview Cards */}
-          <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
             <Card className="border-l-4 border-l-blue-500">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs sm:text-sm font-medium">Today's Revenue</CardTitle>
@@ -190,29 +189,29 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* Four Main Charts in a 2x2 Grid */}
-          <div className="grid gap-3 grid-cols-1 lg:grid-cols-2 max-h-[50vh]">
+          {/* Four Main Charts in a 2x2 Grid with Fixed Height */}
+          <div className="grid gap-4 grid-cols-1 lg:grid-cols-2 mb-8">
             {/* Revenue Trend Chart */}
             <Card className="col-span-1">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <TrendingUp className="h-4 w-4 text-blue-600" />
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                  <TrendingUp className="h-5 w-5 text-blue-600" />
                   Revenue Trend
                 </CardTitle>
-                <CardDescription className="text-xs">Daily revenue over time</CardDescription>
+                <CardDescription className="text-sm">Daily revenue over time</CardDescription>
               </CardHeader>
-              <CardContent className="p-2">
-                <ChartContainer config={revenueChartConfig} className="h-[180px] sm:h-[200px] w-full">
-                  <AreaChart data={revenueData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+              <CardContent className="p-4">
+                <ChartContainer config={revenueChartConfig} className="h-[300px] w-full">
+                  <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
                       dataKey="period" 
-                      tick={{ fontSize: 10, fill: '#64748b' }}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
                     />
                     <YAxis 
-                      tick={{ fontSize: 10, fill: '#64748b' }}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
@@ -237,21 +236,21 @@ export default function Dashboard() {
 
             {/* Sales by Category Chart */}
             <Card className="col-span-1">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Package className="h-4 w-4 text-green-600" />
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                  <Package className="h-5 w-5 text-green-600" />
                   Sales by Category
                 </CardTitle>
-                <CardDescription className="text-xs">Category performance breakdown</CardDescription>
+                <CardDescription className="text-sm">Category performance breakdown</CardDescription>
               </CardHeader>
-              <CardContent className="p-2">
-                <ChartContainer config={categoryChartConfig} className="h-[180px] sm:h-[200px] w-full">
+              <CardContent className="p-4">
+                <ChartContainer config={categoryChartConfig} className="h-[300px] w-full">
                   <PieChart>
                     <Pie
                       data={formattedCategoryData}
                       cx="50%"
                       cy="50%"
-                      outerRadius={60}
+                      outerRadius={80}
                       dataKey="value"
                       label={({ percentage }) => `${percentage}%`}
                       labelLine={false}
@@ -275,25 +274,25 @@ export default function Dashboard() {
 
             {/* Sales vs Target */}
             <Card className="col-span-1">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Target className="h-4 w-4 text-orange-600" />
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                  <Target className="h-5 w-5 text-orange-600" />
                   Sales vs Target
                 </CardTitle>
-                <CardDescription className="text-xs">Performance comparison</CardDescription>
+                <CardDescription className="text-sm">Performance comparison</CardDescription>
               </CardHeader>
-              <CardContent className="p-2">
-                <ChartContainer config={salesChartConfig} className="h-[180px] sm:h-[200px] w-full">
-                  <BarChart data={salesData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+              <CardContent className="p-4">
+                <ChartContainer config={salesChartConfig} className="h-[300px] w-full">
+                  <BarChart data={salesData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
                       dataKey="day" 
-                      tick={{ fontSize: 10, fill: '#64748b' }}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
                     />
                     <YAxis 
-                      tick={{ fontSize: 10, fill: '#64748b' }}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
@@ -315,34 +314,34 @@ export default function Dashboard() {
 
             {/* Inventory Status */}
             <Card className="col-span-1">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Package className="h-4 w-4 text-purple-600" />
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                  <Package className="h-5 w-5 text-purple-600" />
                   Inventory Status
                 </CardTitle>
-                <CardDescription className="text-xs">Stock levels by category</CardDescription>
+                <CardDescription className="text-sm">Stock levels by category</CardDescription>
               </CardHeader>
-              <CardContent className="p-2">
-                <ChartContainer config={inventoryChartConfig} className="h-[180px] sm:h-[200px] w-full">
+              <CardContent className="p-4">
+                <ChartContainer config={inventoryChartConfig} className="h-[300px] w-full">
                   <BarChart 
                     data={inventoryData} 
                     layout="vertical" 
-                    margin={{ top: 5, right: 10, left: 50, bottom: 5 }}
+                    margin={{ top: 10, right: 15, left: 60, bottom: 10 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
                       type="number" 
-                      tick={{ fontSize: 10, fill: '#64748b' }} 
+                      tick={{ fontSize: 12, fill: '#64748b' }} 
                       tickLine={false} 
                       axisLine={false} 
                     />
                     <YAxis 
                       dataKey="category" 
                       type="category" 
-                      tick={{ fontSize: 10, fill: '#64748b' }}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
-                      width={50}
+                      width={60}
                     />
                     <ChartTooltip 
                       content={<ChartTooltipContent 
@@ -360,30 +359,30 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* Detailed Information Sections */}
-          <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
+          {/* Detailed Information Sections - Now properly below charts */}
+          <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-8">
             {/* Recent High-Value Sales */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
                   Recent High-Value Sales
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-3">
                 {stats?.sales?.highValueSales?.slice(0, 3).map((sale, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                     <div>
-                      <p className="text-xs font-medium">{sale.customer}</p>
+                      <p className="text-sm font-medium">{sale.customer}</p>
                       <p className="text-xs text-muted-foreground">#{sale.orderNumber}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs font-bold text-green-600">Rs. {sale.amount.toLocaleString()}</p>
+                      <p className="text-sm font-bold text-green-600">Rs. {sale.amount.toLocaleString()}</p>
                       <p className="text-xs text-muted-foreground">{sale.date}</p>
                     </div>
                   </div>
                 )) || (
-                  <p className="text-xs text-muted-foreground">No recent sales</p>
+                  <p className="text-sm text-muted-foreground">No recent sales</p>
                 )}
               </CardContent>
             </Card>
@@ -391,17 +390,17 @@ export default function Dashboard() {
             {/* System Alerts */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-yellow-500" />
                   System Alerts
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-3">
                 {stats?.inventory?.lowStockItems > 0 && (
-                  <div className="flex items-center space-x-2 p-2 bg-yellow-50 rounded-lg">
-                    <AlertTriangle className="h-3 w-3 text-yellow-500" />
+                  <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
+                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
                     <div>
-                      <p className="text-xs font-medium">Low Stock Alert</p>
+                      <p className="text-sm font-medium">Low Stock Alert</p>
                       <p className="text-xs text-muted-foreground">
                         {stats.inventory.lowStockItems} items running low
                       </p>
@@ -409,20 +408,20 @@ export default function Dashboard() {
                   </div>
                 )}
                 {stats?.inventory?.outOfStockItems > 0 && (
-                  <div className="flex items-center space-x-2 p-2 bg-red-50 rounded-lg">
-                    <AlertTriangle className="h-3 w-3 text-red-500" />
+                  <div className="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
+                    <AlertTriangle className="h-4 w-4 text-red-500" />
                     <div>
-                      <p className="text-xs font-medium">Out of Stock</p>
+                      <p className="text-sm font-medium">Out of Stock</p>
                       <p className="text-xs text-muted-foreground">
                         {stats.inventory.outOfStockItems} items unavailable
                       </p>
                     </div>
                   </div>
                 )}
-                <div className="flex items-center space-x-2 p-2 bg-green-50 rounded-lg">
-                  <CheckCircle className="h-3 w-3 text-green-500" />
+                <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
                   <div>
-                    <p className="text-xs font-medium">System Operational</p>
+                    <p className="text-sm font-medium">System Operational</p>
                     <p className="text-xs text-muted-foreground">All systems running</p>
                   </div>
                 </div>
@@ -432,27 +431,27 @@ export default function Dashboard() {
             {/* Quick Stats */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-blue-500" />
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-blue-500" />
                   Quick Stats
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex justify-between items-center p-2 bg-blue-50 rounded-lg">
-                  <span className="text-xs font-medium">Profit Margin</span>
-                  <span className="text-xs font-bold text-blue-600">
+              <CardContent className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                  <span className="text-sm font-medium">Profit Margin</span>
+                  <span className="text-sm font-bold text-blue-600">
                     {stats?.financial?.profitMargin?.toFixed(1) || '0'}%
                   </span>
                 </div>
-                <div className="flex justify-between items-center p-2 bg-purple-50 rounded-lg">
-                  <span className="text-xs font-medium">Receivables</span>
-                  <span className="text-xs font-bold text-purple-600">
+                <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                  <span className="text-sm font-medium">Receivables</span>
+                  <span className="text-sm font-bold text-purple-600">
                     Rs. {(stats?.customers?.totalReceivables / 1000)?.toFixed(0) || '0'}k
                   </span>
                 </div>
-                <div className="flex justify-between items-center p-2 bg-green-50 rounded-lg">
-                  <span className="text-xs font-medium">Daily Avg Revenue</span>
-                  <span className="text-xs font-bold text-green-600">
+                <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                  <span className="text-sm font-medium">Daily Avg Revenue</span>
+                  <span className="text-sm font-bold text-green-600">
                     Rs. {(stats?.performance?.dailyAvgRevenue / 1000)?.toFixed(0) || '0'}k
                   </span>
                 </div>
