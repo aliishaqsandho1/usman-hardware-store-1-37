@@ -2,19 +2,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, AreaChart, Area } from "recharts"
-import { DollarSign, TrendingUp, Package, Users, AlertTriangle, CheckCircle, ShoppingCart, Target } from "lucide-react"
+import { DollarSign, TrendingUp, Package, Users, AlertTriangle, CheckCircle, ShoppingCart, Target, ArrowUpDown } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { dashboardApi } from "@/services/api"
 
 // Enhanced Chart configurations with beautiful colors
-const revenueChartConfig = {
-  revenue: {
-    label: "Revenue",
-    color: "#3b82f6",
-  },
-  orders: {
-    label: "Orders",
+const cashFlowChartConfig = {
+  inflow: {
+    label: "Cash Inflow",
     color: "#10b981",
+  },
+  outflow: {
+    label: "Cash Outflow",
+    color: "#ef4444",
+  },
+  net: {
+    label: "Net Cash Flow",
+    color: "#3b82f6",
   },
 }
 
@@ -59,11 +63,6 @@ export default function Dashboard() {
     queryFn: dashboardApi.getEnhancedStats,
   })
 
-  const { data: revenueTrend, isLoading: revenueLoading } = useQuery({
-    queryKey: ['dashboard-revenue-trend'],
-    queryFn: dashboardApi.getRevenueTrend,
-  })
-
   const { data: categoryPerformance, isLoading: categoryLoading } = useQuery({
     queryKey: ['dashboard-category-performance'],
     queryFn: dashboardApi.getCategoryPerformance,
@@ -80,7 +79,7 @@ export default function Dashboard() {
   })
 
   // Loading state
-  if (statsLoading || revenueLoading || categoryLoading || salesLoading || inventoryLoading) {
+  if (statsLoading || categoryLoading || salesLoading || inventoryLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -89,7 +88,6 @@ export default function Dashboard() {
   }
 
   const stats = enhancedStats?.data
-  const revenueData = revenueTrend?.data || []
   const categoryData = categoryPerformance?.data || []
   const salesData = dailySales?.data || []
   const inventoryData = inventoryStatus?.data || []
@@ -101,6 +99,22 @@ export default function Dashboard() {
     percentage: item.value,
     unitsSold: item.unitsSold
   }))
+
+  // Create cash flow data from stats
+  const cashFlowData = [
+    {
+      period: "Opening",
+      inflow: 0,
+      outflow: 0,
+      net: stats?.cashFlow?.monthlyInflows - stats?.cashFlow?.monthlyOutflows || 0
+    },
+    {
+      period: "Current",
+      inflow: stats?.cashFlow?.monthlyInflows || 0,
+      outflow: stats?.cashFlow?.monthlyOutflows || 0,
+      net: stats?.cashFlow?.netCashFlow || 0
+    }
+  ]
 
   // Get colors for pie chart
   const getCategoryColor = (category: string) => {
@@ -191,18 +205,18 @@ export default function Dashboard() {
 
           {/* Four Main Charts in a 2x2 Grid with Fixed Height */}
           <div className="grid gap-4 grid-cols-1 lg:grid-cols-2 mb-8">
-            {/* Revenue Trend Chart */}
+            {/* Cash Flow Chart */}
             <Card className="col-span-1">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base font-semibold">
-                  <TrendingUp className="h-5 w-5 text-blue-600" />
-                  Revenue Trend
+                  <ArrowUpDown className="h-5 w-5 text-blue-600" />
+                  Cash Flow Analysis
                 </CardTitle>
-                <CardDescription className="text-sm">Daily revenue over time</CardDescription>
+                <CardDescription className="text-sm">Monthly cash inflow vs outflow</CardDescription>
               </CardHeader>
               <CardContent className="p-4">
-                <ChartContainer config={revenueChartConfig} className="h-[300px] w-full">
-                  <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+                <ChartContainer config={cashFlowChartConfig} className="h-[300px] w-full">
+                  <BarChart data={cashFlowData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
                       dataKey="period" 
@@ -218,18 +232,17 @@ export default function Dashboard() {
                     />
                     <ChartTooltip 
                       content={<ChartTooltipContent 
-                        formatter={(value) => [`Rs. ${value.toLocaleString()}`, 'Revenue']}
+                        formatter={(value, name) => [
+                          `Rs. ${value.toLocaleString()}`,
+                          name === 'inflow' ? 'Inflow' : 
+                          name === 'outflow' ? 'Outflow' : 'Net Flow'
+                        ]}
                       />} 
                     />
-                    <Area
-                      type="monotone"
-                      dataKey="revenue"
-                      stroke="#3b82f6"
-                      fill="#3b82f6"
-                      fillOpacity={0.2}
-                      strokeWidth={2}
-                    />
-                  </AreaChart>
+                    <Bar dataKey="inflow" fill="#10b981" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="outflow" fill="#ef4444" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="net" fill="#3b82f6" radius={[2, 2, 0, 0]} />
+                  </BarChart>
                 </ChartContainer>
               </CardContent>
             </Card>
