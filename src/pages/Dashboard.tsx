@@ -1,7 +1,8 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, AreaChart, Area, Tooltip } from "recharts"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, AreaChart, Area } from "recharts"
 import { DollarSign, TrendingUp, Package, Users, AlertTriangle, CheckCircle, ShoppingCart, Target } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { dashboardApi } from "@/services/api"
@@ -115,12 +116,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-2 sm:p-4 md:p-6 lg:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h2>
-      </div>
-      
-      <Tabs defaultValue="overview" className="space-y-4">
+    <div className="flex-1 space-y-3 p-2 sm:p-4 md:p-6 pt-3">
+      <Tabs defaultValue="overview" className="space-y-3">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
           <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
           <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
@@ -128,84 +125,84 @@ export default function Dashboard() {
           <TabsTrigger value="notifications" className="text-xs sm:text-sm">Notifications</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview" className="space-y-4">
+        <TabsContent value="overview" className="space-y-3">
           {/* Overview Cards */}
-          <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
-            <Card>
+          <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
+            <Card className="border-l-4 border-l-blue-500">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs sm:text-sm font-medium">Today's Revenue</CardTitle>
-                <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
               </CardHeader>
-              <CardContent>
-                <div className="text-lg sm:text-2xl font-bold">
+              <CardContent className="pt-0">
+                <div className="text-lg sm:text-2xl font-bold text-blue-600">
                   Rs. {stats?.financial?.todayRevenue?.toLocaleString() || '0'}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-green-600">
                   {stats?.financial?.revenueGrowth > 0 ? '+' : ''}
                   {stats?.financial?.revenueGrowth?.toFixed(1) || '0'}% from yesterday
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="border-l-4 border-l-green-500">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs sm:text-sm font-medium">Today's Orders</CardTitle>
-                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
               </CardHeader>
-              <CardContent>
-                <div className="text-lg sm:text-2xl font-bold">
+              <CardContent className="pt-0">
+                <div className="text-lg sm:text-2xl font-bold text-green-600">
                   {stats?.sales?.todaySales?.toLocaleString() || '0'}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Avg. Order Value: Rs. {stats?.sales?.avgOrderValue?.toLocaleString() || '0'}
+                  Avg: Rs. {stats?.sales?.avgOrderValue?.toLocaleString() || '0'}
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="border-l-4 border-l-red-500">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs sm:text-sm font-medium">Low Stock Items</CardTitle>
-                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-red-500" />
               </CardHeader>
-              <CardContent>
-                <div className="text-lg sm:text-2xl font-bold">
+              <CardContent className="pt-0">
+                <div className="text-lg sm:text-2xl font-bold text-red-600">
                   {stats?.inventory?.lowStockItems || '0'}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Total Value: Rs. {stats?.inventory?.totalInventoryValue?.toLocaleString() || '0'}
+                  Value: Rs. {(stats?.inventory?.totalInventoryValue / 1000)?.toFixed(0) || '0'}k
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="border-l-4 border-l-purple-500">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs sm:text-sm font-medium">Total Customers</CardTitle>
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500" />
               </CardHeader>
-              <CardContent>
-                <div className="text-lg sm:text-2xl font-bold">
+              <CardContent className="pt-0">
+                <div className="text-lg sm:text-2xl font-bold text-purple-600">
                   {stats?.customers?.totalCustomers?.toLocaleString() || '0'}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Avg. Value: Rs. {stats?.customers?.avgCustomerValue?.toLocaleString() || '0'}
+                  Avg: Rs. {stats?.customers?.avgCustomerValue?.toLocaleString() || '0'}
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Charts Grid */}
-          <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
+          {/* Four Main Charts in a 2x2 Grid */}
+          <div className="grid gap-3 grid-cols-1 lg:grid-cols-2 max-h-[50vh]">
             {/* Revenue Trend Chart */}
             <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <TrendingUp className="h-4 w-4 text-blue-600" />
                   Revenue Trend
                 </CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Daily revenue and orders over time</CardDescription>
+                <CardDescription className="text-xs">Daily revenue over time</CardDescription>
               </CardHeader>
-              <CardContent className="p-2 sm:p-6">
-                <ChartContainer config={revenueChartConfig} className="h-[250px] sm:h-[300px] w-full">
+              <CardContent className="p-2">
+                <ChartContainer config={revenueChartConfig} className="h-[180px] sm:h-[200px] w-full">
                   <AreaChart data={revenueData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
@@ -218,14 +215,11 @@ export default function Dashboard() {
                       tick={{ fontSize: 10, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
-                      tickFormatter={(value) => `Rs. ${(value / 1000).toFixed(0)}k`}
+                      tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
                     />
                     <ChartTooltip 
                       content={<ChartTooltipContent 
-                        formatter={(value, name) => [
-                          name === 'revenue' ? `Rs. ${value.toLocaleString()}` : value,
-                          name === 'revenue' ? 'Revenue' : 'Orders'
-                        ]}
+                        formatter={(value) => [`Rs. ${value.toLocaleString()}`, 'Revenue']}
                       />} 
                     />
                     <Area
@@ -243,15 +237,15 @@ export default function Dashboard() {
 
             {/* Sales by Category Chart */}
             <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                  <Package className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Package className="h-4 w-4 text-green-600" />
                   Sales by Category
                 </CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Product category performance breakdown</CardDescription>
+                <CardDescription className="text-xs">Category performance breakdown</CardDescription>
               </CardHeader>
-              <CardContent className="p-2 sm:p-6">
-                <ChartContainer config={categoryChartConfig} className="h-[250px] sm:h-[300px] w-full">
+              <CardContent className="p-2">
+                <ChartContainer config={categoryChartConfig} className="h-[180px] sm:h-[200px] w-full">
                   <PieChart>
                     <Pie
                       data={formattedCategoryData}
@@ -259,7 +253,7 @@ export default function Dashboard() {
                       cy="50%"
                       outerRadius={60}
                       dataKey="value"
-                      label={({ name, percentage }) => `${name}: ${percentage}%`}
+                      label={({ percentage }) => `${percentage}%`}
                       labelLine={false}
                     >
                       {formattedCategoryData.map((entry, index) => (
@@ -270,7 +264,7 @@ export default function Dashboard() {
                       content={<ChartTooltipContent 
                         formatter={(value, name, props) => [
                           `Rs. ${props.payload.value.toLocaleString()}`,
-                          `${props.payload.name} (${props.payload.unitsSold} units sold)`
+                          `${props.payload.name}`
                         ]}
                       />} 
                     />
@@ -279,17 +273,17 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            {/* Daily Sales vs Target */}
+            {/* Sales vs Target */}
             <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                  <Target className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600" />
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Target className="h-4 w-4 text-orange-600" />
                   Sales vs Target
                 </CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Last 14 days performance comparison</CardDescription>
+                <CardDescription className="text-xs">Performance comparison</CardDescription>
               </CardHeader>
-              <CardContent className="p-2 sm:p-6">
-                <ChartContainer config={salesChartConfig} className="h-[250px] sm:h-[300px] w-full">
+              <CardContent className="p-2">
+                <ChartContainer config={salesChartConfig} className="h-[180px] sm:h-[200px] w-full">
                   <BarChart data={salesData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
@@ -302,18 +296,18 @@ export default function Dashboard() {
                       tick={{ fontSize: 10, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
-                      tickFormatter={(value) => `Rs. ${(value / 1000).toFixed(0)}k`}
+                      tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
                     />
                     <ChartTooltip 
                       content={<ChartTooltipContent 
                         formatter={(value, name) => [
                           `Rs. ${value.toLocaleString()}`,
-                          name === 'sales' ? 'Actual Sales' : 'Target'
+                          name === 'sales' ? 'Actual' : 'Target'
                         ]}
                       />} 
                     />
-                    <Bar dataKey="sales" fill="#10b981" radius={[2, 2, 0, 0]} name="Actual Sales" />
-                    <Bar dataKey="target" fill="#f59e0b" radius={[2, 2, 0, 0]} name="Target" />
+                    <Bar dataKey="sales" fill="#10b981" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="target" fill="#f59e0b" radius={[2, 2, 0, 0]} />
                   </BarChart>
                 </ChartContainer>
               </CardContent>
@@ -321,19 +315,19 @@ export default function Dashboard() {
 
             {/* Inventory Status */}
             <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                  <Package className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Package className="h-4 w-4 text-purple-600" />
                   Inventory Status
                 </CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Current stock levels by category</CardDescription>
+                <CardDescription className="text-xs">Stock levels by category</CardDescription>
               </CardHeader>
-              <CardContent className="p-2 sm:p-6">
-                <ChartContainer config={inventoryChartConfig} className="h-[250px] sm:h-[300px] w-full">
+              <CardContent className="p-2">
+                <ChartContainer config={inventoryChartConfig} className="h-[180px] sm:h-[200px] w-full">
                   <BarChart 
                     data={inventoryData} 
                     layout="vertical" 
-                    margin={{ top: 5, right: 15, left: 60, bottom: 5 }}
+                    margin={{ top: 5, right: 10, left: 50, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis 
@@ -348,92 +342,119 @@ export default function Dashboard() {
                       tick={{ fontSize: 10, fill: '#64748b' }}
                       tickLine={false}
                       axisLine={false}
-                      width={60}
+                      width={50}
                     />
                     <ChartTooltip 
                       content={<ChartTooltipContent 
                         formatter={(value, name) => [
                           value,
-                          name === 'stock' ? 'Current Stock' : 
-                          name === 'sold' ? 'Units Sold' : 'Reorder Level'
+                          name === 'stock' ? 'Stock' : 
+                          name === 'sold' ? 'Sold' : 'Reorder'
                         ]}
                       />} 
                     />
-                    <Bar dataKey="stock" fill="#3b82f6" radius={[0, 2, 2, 0]} name="Current Stock" />
-                    <Bar dataKey="sold" fill="#10b981" radius={[0, 2, 2, 0]} name="Units Sold" />
-                    <Bar dataKey="reorderLevel" fill="#ef4444" radius={[0, 2, 2, 0]} name="Reorder Level" />
+                    <Bar dataKey="stock" fill="#3b82f6" radius={[0, 2, 2, 0]} />
                   </BarChart>
                 </ChartContainer>
               </CardContent>
             </Card>
           </div>
 
-          {/* Recent Activity */}
-          <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+          {/* Detailed Information Sections */}
+          <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
+            {/* Recent High-Value Sales */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-sm sm:text-base">Recent High-Value Sales</CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Latest high-value transactions</CardDescription>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  Recent High-Value Sales
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3 sm:space-y-4">
-                  {stats?.sales?.highValueSales?.slice(0, 5).map((sale, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
-                        <div>
-                          <p className="text-xs sm:text-sm font-medium">{sale.customer}</p>
-                          <p className="text-xs text-muted-foreground">Order #{sale.orderNumber}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs sm:text-sm font-medium">Rs. {sale.amount.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">{sale.date}</p>
-                      </div>
+              <CardContent className="space-y-2">
+                {stats?.sales?.highValueSales?.slice(0, 3).map((sale, index) => (
+                  <div key={index} className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                    <div>
+                      <p className="text-xs font-medium">{sale.customer}</p>
+                      <p className="text-xs text-muted-foreground">#{sale.orderNumber}</p>
                     </div>
-                  )) || (
-                    <p className="text-xs sm:text-sm text-muted-foreground">No recent sales data</p>
-                  )}
+                    <div className="text-right">
+                      <p className="text-xs font-bold text-green-600">Rs. {sale.amount.toLocaleString()}</p>
+                      <p className="text-xs text-muted-foreground">{sale.date}</p>
+                    </div>
+                  </div>
+                )) || (
+                  <p className="text-xs text-muted-foreground">No recent sales</p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* System Alerts */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                  System Alerts
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {stats?.inventory?.lowStockItems > 0 && (
+                  <div className="flex items-center space-x-2 p-2 bg-yellow-50 rounded-lg">
+                    <AlertTriangle className="h-3 w-3 text-yellow-500" />
+                    <div>
+                      <p className="text-xs font-medium">Low Stock Alert</p>
+                      <p className="text-xs text-muted-foreground">
+                        {stats.inventory.lowStockItems} items running low
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {stats?.inventory?.outOfStockItems > 0 && (
+                  <div className="flex items-center space-x-2 p-2 bg-red-50 rounded-lg">
+                    <AlertTriangle className="h-3 w-3 text-red-500" />
+                    <div>
+                      <p className="text-xs font-medium">Out of Stock</p>
+                      <p className="text-xs text-muted-foreground">
+                        {stats.inventory.outOfStockItems} items unavailable
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-center space-x-2 p-2 bg-green-50 rounded-lg">
+                  <CheckCircle className="h-3 w-3 text-green-500" />
+                  <div>
+                    <p className="text-xs font-medium">System Operational</p>
+                    <p className="text-xs text-muted-foreground">All systems running</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
+            {/* Quick Stats */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-sm sm:text-base">System Alerts</CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Important notifications and warnings</CardDescription>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-blue-500" />
+                  Quick Stats
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3 sm:space-y-4">
-                  {stats?.inventory?.lowStockItems > 0 && (
-                    <div className="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 bg-yellow-50 rounded-lg">
-                      <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500" />
-                      <div>
-                        <p className="text-xs sm:text-sm font-medium">Low Stock Alert</p>
-                        <p className="text-xs text-muted-foreground">
-                          {stats.inventory.lowStockItems} items running low
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {stats?.inventory?.outOfStockItems > 0 && (
-                    <div className="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 bg-red-50 rounded-lg">
-                      <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-red-500" />
-                      <div>
-                        <p className="text-xs sm:text-sm font-medium">Out of Stock</p>
-                        <p className="text-xs text-muted-foreground">
-                          {stats.inventory.outOfStockItems} items out of stock
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 bg-green-50 rounded-lg">
-                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium">System Status</p>
-                      <p className="text-xs text-muted-foreground">All systems operational</p>
-                    </div>
-                  </div>
+              <CardContent className="space-y-2">
+                <div className="flex justify-between items-center p-2 bg-blue-50 rounded-lg">
+                  <span className="text-xs font-medium">Profit Margin</span>
+                  <span className="text-xs font-bold text-blue-600">
+                    {stats?.financial?.profitMargin?.toFixed(1) || '0'}%
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-purple-50 rounded-lg">
+                  <span className="text-xs font-medium">Receivables</span>
+                  <span className="text-xs font-bold text-purple-600">
+                    Rs. {(stats?.customers?.totalReceivables / 1000)?.toFixed(0) || '0'}k
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded-lg">
+                  <span className="text-xs font-medium">Daily Avg Revenue</span>
+                  <span className="text-xs font-bold text-green-600">
+                    Rs. {(stats?.performance?.dailyAvgRevenue / 1000)?.toFixed(0) || '0'}k
+                  </span>
                 </div>
               </CardContent>
             </Card>
